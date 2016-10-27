@@ -33,7 +33,7 @@ def doomsday(y):
     b = w % 12
     c = b // 4
     d = (a + b + c) % 7
-    doomsday = (x + d) % 7
-    return doomsday
+    day = (x + d) % 7
+    return day
 
           
