@@ -34,3 +34,4 @@ Does it handle grades as well?
 # *** DO NOT ADD ANY COMMENTS OF YOUR OWN IN THE SUBMITTED SOLUTION ***
 
 def sortStudents(a):
+	return sorted(a, key=lambda x: (-x[1], x[0])) if (isinstance(a[0][1], int) == True) else sorted(a, key=lambda x: (x[1], x[0]))
