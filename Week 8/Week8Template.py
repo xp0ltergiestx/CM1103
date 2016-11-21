@@ -28,7 +28,23 @@ True
 
 def sumRows(filename, header=False):
     # Add code here
+    import csv
+    d = {}
+    with open(filename) as csvfile:
+    	rdr = csv.reader(csvfile)
+    	if header == True:
+    		next(csvfile)
+
+		for row in rdr:
+			rowtotal = 0
+			for value in row:
+				rowtotal += int(value)
+			d[row[0]] = 5
+
+
+	print d
+
 
 def sumColumns(filename):
     # Add code here
-
+    return 0
