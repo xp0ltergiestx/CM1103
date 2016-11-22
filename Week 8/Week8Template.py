@@ -26,19 +26,23 @@ True
 # *** DO NOT CHANGE CODE ABOVE THIS LINE ***
 # *** DO NOT ADD ANY COMMENTS OF YOUR OWN IN THE SUBMITTED SOLUTION ***
 
+import csv
+
 def sumRows(filename, header=False):
-    # Add code here
-    import csv
     d = {}
     with open(filename) as csvfile:
-        for row in csv.reader(csvfile):
+        rdr = csv.reader(csvfile)
+        if header == True:
+            next(csv.reader(csvfile))
+        for row in rdr:
             rowtotal = 0
             for column in row[1:]:
-                rowtotal += int(column)
-            d[row[0]] = rowtotal    
-
+                if column.isdigit():
+                    rowtotal += int(column)
+            d[row[0]] = rowtotal
     return d
 
 def sumColumns(filename):
-    # Add code here
-    return 0
+    with open(filename) as csvfile:
+            rows = csv.DictReader(csvfile)
+            
