@@ -31,19 +31,13 @@ def sumRows(filename, header=False):
     import csv
     d = {}
     with open(filename) as csvfile:
-    	rdr = csv.reader(csvfile)
-    	if header == True:
-    		next(csvfile)
+        for row in csv.reader(csvfile):
+            rowtotal = 0
+            for column in row[1:]:
+                rowtotal += int(column)
+            d[row[0]] = rowtotal    
 
-		for row in rdr:
-			rowtotal = 0
-			for value in row:
-				rowtotal += int(value)
-			d[row[0]] = 5
-
-
-	print d
-
+    return d
 
 def sumColumns(filename):
     # Add code here
