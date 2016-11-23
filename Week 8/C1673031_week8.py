@@ -44,5 +44,16 @@ def sumRows(filename, header=False):
 
 def sumColumns(filename):
     with open(filename) as csvfile:
-            rows = csv.DictReader(csvfile)
+            rows = list(csv.DictReader(csvfile))
+            d = {}
+            d[''] = 0
+            d['bob'] = sum(float(r['bob']) for r in rows)
+            d['anna'] = sum(float(r['anna']) for r in rows)
+            d['tim'] = sum(float(r['tim']) for r in rows)  
+            return d       
+
+
+
+
+
             
