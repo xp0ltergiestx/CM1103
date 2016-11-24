@@ -8,10 +8,12 @@ with open('facup.csv') as csvfile:
 			print("True")
 		else:
 			print("False")
+
 with open('MultipleTourWinners.csv') as csvfile:
 	rdr = csv.reader(csvfile)
 	for row in rdr:
 		print(row[0] + " has won " + row[2] + " times.")
+		
 with open ('MultipleTourWinners.csv') as csvfile:
 	rdr = csv.reader(csvfile)
 	for i, row in enumerate(rdr):
