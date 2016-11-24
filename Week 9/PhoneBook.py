@@ -1,29 +1,32 @@
-#Define the empty class PhoneBookEntry here
 class PhoneBookEntry:
-	pass
+    number = ""
+    email = ""
 
 class PhoneBook:
-	def __init__(self):
-		self.data=dict()	
-	
-	def addEntry(self,name,number,email):
-		self.data[name]=PhoneBookEntry()
-		self.data[number]=number
-		self.data[email]=email
+    def __init__(self):
+        self.data=dict()    
 
-	def delEntry(self,name):
-		#Write code here to delete the appropriate entry from the self.data dictionary
-		self.data.pop(name)
-	
-	def exist(self, name) :
-		if name in self.data:
-			return True
-		else:
-			return False	
+    def addEntry(self,name,number,email):
+        self.data[name]=PhoneBookEntry()
+        self.data[name].number=number
+        self.data[name].email=email
 
-	def printBook(self):
-		for name, number, email in self.data.items():
-			print(self.name, self.number, self.email)
+    def delEntry(self,name):
+        self.data[name].pop()
+
+    def exist(self,name):
+        if name in self.data:
+            return True
+        else:
+            return False
+
+    def printBook(self):
+        print("===========================")
+        for item in self.data:
+            print(item)
+            print(self.data[item].number)
+            print(self.data[item].email)
+            print("===========================")
 
 myPhoneBook=PhoneBook()
 myPhoneBook.addEntry("Stuart Allen","02920222222","S.M.Allen@cs.cf.ac.uk")
