@@ -1,7 +1,7 @@
 # These are the values that you must change.
-m = 87
-a = 21
-c = 57
+m = 83
+a = 84
+c = 53
 
 #You do not need to change below here
 x = 57
