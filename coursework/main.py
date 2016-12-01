@@ -9,8 +9,8 @@ def game(ra, rb):
 	p = ra / (ra + rb)
 
 	# these are the variables to store the scores for player A and B respectively
-	sa = 0 
-	sb = 0
+	score_a = 0 
+	score_b = 0
 
 	# a boolean value to determine whether the game has finished or not
 	gameOver = False
@@ -20,30 +20,32 @@ def game(ra, rb):
 		r = random.uniform(0, 1)
 
 		if r < p:
-			sa += 1
+			score_a += 1
 		else:
-			sb += 1 
+			score_b += 1
 
-		if (sb >= 11 or sa >= 11) and (abs(sa-sb) > 1):
-			gameOver = True
+		reached_eleven = (score_a >= 11) or (score_b >= 11)
+		two_point_difference = abs(score_a-score_b) > 1
 
-	return sa, sb
+		if reached_eleven and two_point_difference: gameOver = True
+
+	return score_a, score_b
 
 def winProbability(ra, rb, n):
 	# initialise values for number of wins for A and B respectively
-	wa = 0
-	wb = 0
+	wins_a = 0
+	wins_b = 0
 
 	for match in range(0, n):
-		# sa and sb represent a and b's scores respectively 
-		sa, sb = game(ra, rb)
-		if sa > sb:
-			wa += 1
+		# score_a and score_b represent a and b's scores respectively 
+		score_a, score_b = game(ra, rb)
+		if score_a > score_b:
+			wins_a += 1
 		else:
-			wb += 1	
+			wins_b += 1	
 		
 	# the probability that A wins
-	pa = wa / (wa + wb)	
+	pa = wins_a / (wins_a + wins_b)	
 	pa = round(pa, 2)
 	return pa
 
@@ -63,21 +65,13 @@ def graphMaker(player_list):
 	for key in player_list:
 		pa.append(winProbability(key[0], key[1], 10000))
 		rarb.append(key[0] / key[1])	
-	plt.plot(rarb, pa, 'bx')
+	plt.plot(rarb, pa)
 	plt.axis([0, 3.5, 0, 1])
 	plt.ylabel('Probability of A winning')
 	plt.xlabel('Player A ability / Player B ability')
 	plt.show()
 
-# for key in readCSV('test.csv'):
-# 	print(key)
-# 	print(key[0], key[1])
-# 	print(winProbability(key[0], key[1], 10000))
-
-
-
-
-graphMaker(readCSV('test.csv'))
+# graphMaker(readCSV('test.csv'))
 # print(readCSV('test.csv'))
-# print(game(70, 30))	
+print(game(70, 30))	
 # print(winProbability(70, 30, 100))
