@@ -2,7 +2,7 @@ import random
 import csv
 import matplotlib.pyplot as plt
 
-random.seed(57)
+# random.seed(57)
 
 def game(ra, rb):
 	# p is the probability that player A wins a point
@@ -11,6 +11,8 @@ def game(ra, rb):
 	# these are the variables to store the scores for player A and B respectively
 	score_a = 0 
 	score_b = 0
+
+	rallies = 0
 
 	# a boolean value to determine whether the game has finished or not
 	gameOver = False
@@ -27,9 +29,11 @@ def game(ra, rb):
 		reached_eleven = (score_a >= 11) or (score_b >= 11)
 		two_point_difference = abs(score_a-score_b) > 1
 
+		rallies += 1
+
 		if reached_eleven and two_point_difference: gameOver = True
 
-	return score_a, score_b
+	return score_a, score_b, rallies
 
 def winProbability(ra, rb, n):
 	# initialise values for number of wins for A and B respectively
@@ -46,7 +50,7 @@ def winProbability(ra, rb, n):
 		
 	# the probability that A wins
 	pa = wins_a / (wins_a + wins_b)	
-	pa = round(pa, 2)
+	# pa = round(pa, 2)
 	return pa
 
 def readCSV(file):
@@ -71,7 +75,61 @@ def graphMaker(player_list):
 	plt.xlabel('Player A ability / Player B ability')
 	plt.show()
 
+def english_game(ra, rb):
+
+	p = ra / (ra + rb)
+
+	server = 'c'
+
+	# these are the variables to store the scores for player A and B respectively
+	score_a = 0 
+	score_b = 0
+
+	play_to = 9
+
+	rallies = 0
+
+	# a boolean value to determine whether the game has finished or not
+	gameOver = False
+
+	while gameOver == False:
+			
+		r = random.uniform(0, 1)
+
+		if r < p:
+			if  server == 'a':
+				score_a += 1
+			else:
+				server = 'a'
+		else:
+			if server == 'b':
+				score_b += 1
+			else:
+				server = 'b'
+					
+
+		if score_a == 8 and score_b == 8:
+			if r < 0.5:
+				play_to = 10	
+
+		rallies += 1		
+
+		reached_play_to = (score_a == play_to) or (score_b == play_to)
+
+		if reached_play_to: gameOver = True
+
+	return score_a, score_b, rallies
+
+def q2():
+	eng_score_a, eng_score_b, eng_rallies = english_game(50, 50)
+
+
+# print(english_game(50, 50))
+
+# for i in range(1, 10):
+# 	print(winProbability(60, 40, i))	
+
 # graphMaker(readCSV('test.csv'))
 # print(readCSV('test.csv'))
-print(game(70, 30))	
+# print(game(70, 30))	
 # print(winProbability(70, 30, 100))
