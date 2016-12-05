@@ -33,16 +33,18 @@ def game(ra, rb):
 
 		if reached_eleven and two_point_difference: gameOver = True
 
-	return score_a, score_b, rallies
+	return score_a, score_b
 
 def winProbability(ra, rb, n):
 	# initialise values for number of wins for A and B respectively
 	wins_a = 0
 	wins_b = 0
+	rallies = 0
 
 	for match in range(0, n):
 		# score_a and score_b represent a and b's scores respectively 
 		score_a, score_b = game(ra, rb)
+		rallies += (score_a + score_b)
 		if score_a > score_b:
 			wins_a += 1
 		else:
@@ -51,7 +53,30 @@ def winProbability(ra, rb, n):
 	# the probability that A wins
 	pa = wins_a / (wins_a + wins_b)	
 	# pa = round(pa, 2)
-	return pa
+
+	rallies = rallies / n
+	return pa, rallies
+
+def englishWinProbability(ra, rb, n):
+	# initialise values for number of wins for A and B respectively
+	wins_a = 0
+	wins_b = 0
+	rallies = 0
+
+	for match in range(0, n):
+		# score_a and score_b represent a and b's scores respectively 
+		score_a, score_b, temp = english_game(ra, rb)
+		if score_a > score_b:
+			wins_a += 1
+		else:
+			wins_b += 1
+		rallies += temp		
+		
+	# the probability that A wins
+	pa = wins_a / (wins_a + wins_b)	
+	# pa = round(pa, 2)
+	rallies = rallies / n
+	return pa, rallies
 
 def readCSV(file):
 	with open(file) as csvfile:
@@ -64,6 +89,7 @@ def readCSV(file):
 	return lot
 
 def graphMaker(player_list):
+	# pa is the probability of A winning a game, rarb is As ability divided by Bs
 	pa = []
 	rarb = []
 	for key in player_list:
@@ -121,15 +147,38 @@ def english_game(ra, rb):
 	return score_a, score_b, rallies
 
 def q2():
-	eng_score_a, eng_score_b, eng_rallies = english_game(50, 50)
+	playerlist = readCSV('players.csv')
+	eng_pa_list = []
+	eng_rallies_list = []
+	rarb = []
+	pars_pa_list = []
+	pars_rallies_list = []
+	for key in playerlist:
+		eng_pa, eng_rallies = englishWinProbability(key[0], key[1], 1000)
+		eng_pa_list.append(eng_pa)
+		eng_rallies_list.append(eng_rallies)
+
+		pars_pa, pars_rallies = winProbability(key[0], key[1], 1000)
+		pars_pa_list.append(pars_pa)
+		pars_rallies_list.append(pars_rallies)
+		rarb.append(key[0] / key[1])
+
+	plt.plot(rarb, eng_rallies_list)
+	plt.plot(rarb, pars_rallies_list)
+	plt.axis([0, 10, 10, 30])
+	plt.ylabel('Minutes')
+	plt.xlabel('Player A ability / Player B ability')
+	plt.show()
+
+q2()
+
+
+def q1e():
+	p = 0.836
 
 
 # print(english_game(50, 50))
-
-# for i in range(1, 10):
-# 	print(winProbability(60, 40, i))	
-
 # graphMaker(readCSV('test.csv'))
 # print(readCSV('test.csv'))
 # print(game(70, 30))	
-# print(winProbability(70, 30, 100))
+# print(winProbability(60, 40, 1000000))
