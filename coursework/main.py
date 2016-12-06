@@ -173,10 +173,12 @@ def q2():
 	plt.show()
 
 def q1e(ra, rb, n):
-	p = 0.836
-	q = 0.164
+	probabilities = {}
+	probabilities['W'] = 0.836
+	probabilities['L'] = 0.164
 	wins = 0
-	new_list = []
+	temp1 = []
+	temp2 = []
 
 	combinations = itertools.product('WL', repeat=((2*n)-1))
 
@@ -186,16 +188,31 @@ def q1e(ra, rb, n):
 			if i[j] == 'W':
 				wins += 1
 			if wins == n:
-				new_list.append(i[:j+1])
+				temp1.append(i[:j+1])
 
-	new_list = set(new_list)			
+	for i in temp1:
+		if i.count("W") > i.count("L"):
+			if i[-1]  == 'W':
+				temp2.append(i)
+		else:
+			if i[-1] == 'L':
+				temp2.append(i)
 
-	for i in new_list:
-		print(i)
+	temp2 = set(temp2)
+
+	totalwinprobability = 0	
+
+	for m in temp2:
+		winProb = 1
+		for char in m:
+			winProb *= probabilities[char]	
+		if m.count('W') == n:
+			totalwinprobability += winProb	
+
+	print(totalwinprobability)
 
 
-
-q1e(60, 40, 3)
+q1e(60, 40, 1)
 # print(english_game(50, 50))
 # graphMaker(readCSV('test.csv'))
 # print(readCSV('test.csv'))
