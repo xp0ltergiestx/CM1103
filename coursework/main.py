@@ -1,5 +1,6 @@
 import random
 import csv
+import itertools 
 import matplotlib.pyplot as plt
 
 # random.seed(57)
@@ -154,11 +155,11 @@ def q2():
 	pars_pa_list = []
 	pars_rallies_list = []
 	for key in playerlist:
-		eng_pa, eng_rallies = englishWinProbability(key[0], key[1], 1000)
+		eng_pa, eng_rallies = englishWinProbability(key[0], key[1], 10000)
 		eng_pa_list.append(eng_pa)
 		eng_rallies_list.append(eng_rallies)
 
-		pars_pa, pars_rallies = winProbability(key[0], key[1], 1000)
+		pars_pa, pars_rallies = winProbability(key[0], key[1], 10000)
 		pars_pa_list.append(pars_pa)
 		pars_rallies_list.append(pars_rallies)
 		rarb.append(key[0] / key[1])
@@ -166,17 +167,35 @@ def q2():
 	plt.plot(rarb, eng_rallies_list)
 	plt.plot(rarb, pars_rallies_list)
 	plt.axis([0, 10, 10, 30])
-	plt.ylabel('Minutes')
-	plt.xlabel('Player A ability / Player B ability')
+	plt.ylabel('Average time for game')
+	plt.xlabel('Relative abilities Ra/Rb')
+	plt.title('A graph showing relative abilities against time for rallies, for the English and PARS scoring systems')
 	plt.show()
 
-q2()
-
-
-def q1e():
+def q1e(ra, rb, n):
 	p = 0.836
+	q = 0.164
+	wins = 0
+	new_list = []
+
+	combinations = itertools.product('WL', repeat=((2*n)-1))
+
+	for i in combinations:
+		wins = 0
+		for j in range(0, len(i)):
+			if i[j] == 'W':
+				wins += 1
+			if wins == n:
+				new_list.append(i[:j+1])
+
+	new_list = set(new_list)			
+
+	for i in new_list:
+		print(i)
 
 
+
+q1e(60, 40, 3)
 # print(english_game(50, 50))
 # graphMaker(readCSV('test.csv'))
 # print(readCSV('test.csv'))
