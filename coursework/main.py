@@ -3,17 +3,18 @@ import csv
 import itertools 
 import matplotlib.pyplot as plt
 
-# random.seed(57)
+
 
 def game(ra, rb):
+	# setting the random seed
+	# random.seed(57)
+
 	# p is the probability that player A wins a point
 	p = ra / (ra + rb)
 
 	# these are the variables to store the scores for player A and B respectively
 	score_a = 0 
 	score_b = 0
-
-	rallies = 0
 
 	# a boolean value to determine whether the game has finished or not
 	gameOver = False
@@ -29,8 +30,6 @@ def game(ra, rb):
 
 		reached_eleven = (score_a >= 11) or (score_b >= 11)
 		two_point_difference = abs(score_a-score_b) > 1
-
-		rallies += 1
 
 		if reached_eleven and two_point_difference: gameOver = True
 
@@ -106,7 +105,7 @@ def english_game(ra, rb):
 
 	p = ra / (ra + rb)
 
-	server = 'c'
+	server = None 
 
 	# these are the variables to store the scores for player A and B respectively
 	score_a = 0 
@@ -172,49 +171,60 @@ def q2():
 	plt.title('A graph showing relative abilities against time for rallies, for the English and PARS scoring systems')
 	plt.show()
 
-def q1e(ra, rb, n):
+def q1e(ra, rb, minProbability):
 	probabilities = {}
-	probabilities['W'] = 0.836
-	probabilities['L'] = 0.164
-	wins = 0
-	temp1 = []
-	temp2 = []
+	probabilities['W'] = winProbability(ra, rb, 1000000)[0]
+	probabilities['L'] = 1 - probabilities['W']
+	
+	totalwinprobability = 0
+	numberOfGames = 0
+	
 
-	combinations = itertools.product('WL', repeat=((2*n)-1))
+	while totalwinprobability < minProbability:
+		numberOfGames += 1
+		
 
-	for i in combinations:
-		wins = 0
-		for j in range(0, len(i)):
-			if i[j] == 'W':
-				wins += 1
-			if wins == n:
-				temp1.append(i[:j+1])
+		# these variables need to be reset each time
+		totalwinprobability = 0
+		listOfWinningCombinations = []
+		shortenedListOfCombinations = []
+		finalList = []
 
-	for i in temp1:
-		if i.count("W") > i.count("L"):
-			if i[-1]  == 'W':
-				temp2.append(i)
-		else:
-			if i[-1] == 'L':
-				temp2.append(i)
+		combinations = itertools.product('WL', repeat=((2*numberOfGames)-1))
 
-	temp2 = set(temp2)
+		for comb in combinations:
+			wins = 0
+			for j in range(0, len(comb)):
+				if comb[j] == 'W':
+					wins += 1
+				if wins == numberOfGames:
+					listOfWinningCombinations.append(comb[:j+1])
 
-	totalwinprobability = 0	
+		for comb in listOfWinningCombinations:
+			if comb.count('W') > comb.count('L'):
+				if comb[-1]  == 'W':
+					shortenedListOfCombinations.append(comb)
+			else:
+				if i[-1] == 'L':
+					shortenedListOfCombinations.append(comb)
 
-	for m in temp2:
-		winProb = 1
-		for char in m:
-			winProb *= probabilities[char]	
-		if m.count('W') == n:
-			totalwinprobability += winProb	
+		# removing duplicates
+		finalList = set(shortenedListOfCombinations)
 
-	print(totalwinprobability)
+		for comb in finalList:
+			winProb = 1
+			for char in comb:
+				winProb *= probabilities[char]	
+			if comb.count('W') == numberOfGames:
+				totalwinprobability += winProb			
+				
+
+	print("To achieve a winning probability of " + str(minProbability) + " you'll need to play " + str(numberOfGames) + " games.")
 
 
-q1e(60, 40, 1)
-# print(english_game(50, 50))
+q1e(60, 40, 0.93)
+print(english_game(50, 50))
 # graphMaker(readCSV('test.csv'))
 # print(readCSV('test.csv'))
-# print(game(70, 30))	
+print(game(70, 30))	
 # print(winProbability(60, 40, 1000000))
