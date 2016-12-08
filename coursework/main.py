@@ -12,11 +12,9 @@ def game(ra, rb):
 	# p is the probability that player A wins a point
 	p = ra / (ra + rb)
 
-	# these are the variables to store the scores for player A and B respectively
 	score_a = 0 
 	score_b = 0
 
-	# a boolean value to determine whether the game has finished or not
 	gameOver = False
 
 	while gameOver == False:
@@ -36,13 +34,11 @@ def game(ra, rb):
 	return score_a, score_b
 
 def winProbability(ra, rb, n):
-	# initialise values for number of wins for A and B respectively
 	wins_a = 0
 	wins_b = 0
 	rallies = 0
 
 	for match in range(0, n):
-		# score_a and score_b represent a and b's scores respectively 
 		score_a, score_b = game(ra, rb)
 		rallies += (score_a + score_b)
 		if score_a > score_b:
@@ -52,19 +48,18 @@ def winProbability(ra, rb, n):
 		
 	# the probability that A wins
 	pa = wins_a / (wins_a + wins_b)	
-	# pa = round(pa, 2)
+	pa = round(pa, 2)
 
 	rallies = rallies / n
+	# this returns the number of rallies, to help with question 2
 	return pa, rallies
 
 def englishWinProbability(ra, rb, n):
-	# initialise values for number of wins for A and B respectively
 	wins_a = 0
 	wins_b = 0
 	rallies = 0
 
 	for match in range(0, n):
-		# score_a and score_b represent a and b's scores respectively 
 		score_a, score_b, temp = english_game(ra, rb)
 		if score_a > score_b:
 			wins_a += 1
@@ -74,7 +69,7 @@ def englishWinProbability(ra, rb, n):
 		
 	# the probability that A wins
 	pa = wins_a / (wins_a + wins_b)	
-	# pa = round(pa, 2)
+	pa = round(pa, 2)
 	rallies = rallies / n
 	return pa, rallies
 
@@ -107,7 +102,6 @@ def english_game(ra, rb):
 
 	server = None 
 
-	# these are the variables to store the scores for player A and B respectively
 	score_a = 0 
 	score_b = 0
 
@@ -115,7 +109,6 @@ def english_game(ra, rb):
 
 	rallies = 0
 
-	# a boolean value to determine whether the game has finished or not
 	gameOver = False
 
 	while gameOver == False:
@@ -183,7 +176,6 @@ def q1e(ra, rb, minProbability):
 	while totalwinprobability < minProbability:
 		numberOfGames += 1
 		
-
 		# these variables need to be reset each time
 		totalwinprobability = 0
 		listOfWinningCombinations = []
@@ -222,9 +214,21 @@ def q1e(ra, rb, minProbability):
 	print("To achieve a winning probability of " + str(minProbability) + " you'll need to play " + str(numberOfGames) + " games.")
 
 
-q1e(60, 40, 0.93)
-print(english_game(50, 50))
-# graphMaker(readCSV('test.csv'))
+### For question 1a, uncomment the random seed in the 'game' function, and the following line:
+# print(game(70, 30))	
+
+### For question 1b, uncomment the following line, and make sure the random seed in 'game' is not set:
+# print(winProbability(70, 30, 1000000))
+
+### For question 1c, uncomment the following line:
 # print(readCSV('test.csv'))
-print(game(70, 30))	
-# print(winProbability(60, 40, 1000000))
+
+### For question 1d, make sure random seed is not set and uncomment the following line:
+# graphMaker(readCSV('test.csv'))
+
+### For question 1e, make sure random seed is not set and uncomment the following line:
+# q1e(60, 40, 0.9)
+
+### For question 2, make sure random seed is not set and uncomment the following line:
+# q2()
+
